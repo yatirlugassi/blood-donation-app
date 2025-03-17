@@ -5,7 +5,7 @@ import { useAuth } from '../../contexts/AuthContext';
 const HeroHeader: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, signOut } = useAuth();
+  const { user, signOut, refreshSession } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -26,6 +26,13 @@ const HeroHeader: React.FC = () => {
     };
   }, []);
 
+  // Refresh session when component mounts
+  useEffect(() => {
+    if (user) {
+      refreshSession();
+    }
+  }, [user, refreshSession]);
+
   const handleSignOut = async () => {
     try {
       console.log('HeroHeader: Attempting to sign out...');
@@ -33,16 +40,15 @@ const HeroHeader: React.FC = () => {
       
       if (error) {
         console.error('HeroHeader: Error signing out:', error);
-        // If there's an error, force a redirect to home page
-        window.location.href = '/';
-      } else {
-        console.log('HeroHeader: Sign out successful, redirecting to home page');
-        // The redirect is now handled in the AuthContext signOut function
       }
+      
+      // Always navigate to home page after logout attempt
+      console.log('HeroHeader: Redirecting to home page after logout');
+      navigate('/');
+      
     } catch (error) {
       console.error('HeroHeader: Exception during sign out:', error);
-      // If there's an exception, force a redirect to home page
-      window.location.href = '/';
+      navigate('/');
     }
   };
 
@@ -183,4 +189,4 @@ const HeroHeader: React.FC = () => {
   );
 };
 
-export default HeroHeader; 
+export default HeroHeader;
