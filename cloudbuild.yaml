@@ -1,0 +1,23 @@
+steps:
+  # Build the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/algebraic-craft-454012-r9/blood-donation-app:$COMMIT_SHA', '.']
+  
+  # Push the container image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/algebraic-craft-454012-r9/blood-donation-app:$COMMIT_SHA']
+  
+  # Deploy container image to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'blood-donation-app'
+      - '--image=gcr.io/algebraic-craft-454012-r9/blood-donation-app:$COMMIT_SHA'
+      - '--region=europe-west10'
+      - '--platform=managed'
+      - '--allow-unauthenticated'
+
+images:
+  - 'gcr.io/algebraic-craft-454012-r9/blood-donation-app:$COMMIT_SHA'
