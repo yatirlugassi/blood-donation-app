@@ -1,0 +1,5 @@
+# Navigate to the tests directory first
+cd tests
+
+# Run all tests using the test runner script
+node run-tests.js

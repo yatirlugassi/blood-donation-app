@@ -1,0 +1,260 @@
+/* Social Sharing Component Styles */
+.social-sharing-container {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.social-sharing-container h3 {
+  color: #15283F;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+}
+
+.social-sharing-container p {
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+/* Sharing Buttons */
+.sharing-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.share-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem 1rem;
+  border-radius: 50px;
+  border: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.share-btn i {
+  margin-right: 0.5rem;
+  font-size: 1rem;
+}
+
+.share-btn.twitter {
+  background-color: #1DA1F2;
+}
+
+.share-btn.facebook {
+  background-color: #4267B2;
+}
+
+.share-btn.linkedin {
+  background-color: #0077B5;
+}
+
+.share-btn.copy-link {
+  background-color: #6c757d;
+}
+
+.share-btn.generate-card {
+  background-color: #28a745;
+}
+
+.share-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.share-btn:active {
+  transform: translateY(0);
+}
+
+/* Share Card */
+.share-card-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.share-card {
+  background-color: white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.share-card-header {
+  background-color: #15283F;
+  color: white;
+  padding: 1.25rem;
+  text-align: center;
+}
+
+.share-card-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: white;
+}
+
+.share-card-content {
+  padding: 2rem;
+  text-align: center;
+}
+
+.share-card-icon {
+  font-size: 3rem;
+  color: #e74c3c;
+  margin-bottom: 1.5rem;
+}
+
+.share-card-icon i {
+  background-color: rgba(231, 76, 60, 0.1);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.share-card-stats {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #15283F;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 0.25rem;
+}
+
+.share-card-message {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.share-card-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-top: 1px solid #eee;
+  padding-top: 1rem;
+}
+
+.share-card-logo {
+  font-weight: 700;
+  color: #15283F;
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+}
+
+.share-card-url {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.close-card-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.25rem;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.close-card-btn:hover {
+  opacity: 1;
+}
+
+.download-card-btn {
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  background-color: #15283F;
+  color: white;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.download-card-btn:hover {
+  background-color: #0e1c2d;
+}
+
+.download-card-btn i {
+  margin-right: 0.5rem;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .sharing-buttons {
+    flex-direction: column;
+  }
+  
+  .share-btn {
+    width: 100%;
+  }
+  
+  .share-card-stats {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .share-card {
+    max-width: 100%;
+  }
+  
+  .share-card-content {
+    padding: 1.5rem;
+  }
+  
+  .share-card-icon {
+    font-size: 2.5rem;
+  }
+  
+  .stat-value {
+    font-size: 1.75rem;
+  }
+} 

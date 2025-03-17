@@ -1,0 +1,270 @@
+/* Leaderboard Component Styles */
+.leaderboard-container {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.leaderboard-header {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.leaderboard-header h3 {
+  color: #15283F;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+}
+
+/* Filters */
+.leaderboard-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.filter-group label {
+  font-weight: 600;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.filter-btn {
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-btn:hover:not(:disabled) {
+  background-color: #e0e0e0;
+}
+
+.filter-btn.active {
+  background-color: #15283F;
+  color: white;
+  border-color: #15283F;
+}
+
+.filter-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Loading and Error States */
+.leaderboard-loading,
+.leaderboard-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: #15283F;
+  animation: spin 1s ease-in-out infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.leaderboard-error p {
+  color: #e74c3c;
+  margin-bottom: 1rem;
+}
+
+.leaderboard-error button {
+  background-color: #15283F;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.leaderboard-error button:hover {
+  background-color: #0e1c2d;
+}
+
+/* Leaderboard Table */
+.leaderboard-table {
+  width: 100%;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #eee;
+}
+
+.leaderboard-table-header {
+  display: grid;
+  grid-template-columns: 0.5fr 2fr 1fr 1fr 1fr;
+  background-color: #f5f5f5;
+  font-weight: 600;
+  color: #333;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.leaderboard-table-body {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.leaderboard-row {
+  display: grid;
+  grid-template-columns: 0.5fr 2fr 1fr 1fr 1fr;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.2s;
+}
+
+.leaderboard-row:last-child {
+  border-bottom: none;
+}
+
+.leaderboard-row:hover {
+  background-color: #f9f9f9;
+}
+
+.leaderboard-row.current-user {
+  background-color: rgba(21, 40, 63, 0.05);
+  font-weight: 600;
+}
+
+/* Table Columns */
+.rank-col,
+.donor-col,
+.region-col,
+.blood-type-col,
+.donations-col {
+  display: flex;
+  align-items: center;
+}
+
+.rank-col {
+  font-weight: 600;
+}
+
+.rank-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  color: white;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.rank-badge.rank-1 {
+  background-color: #FFD700; /* Gold */
+}
+
+.rank-badge.rank-2 {
+  background-color: #C0C0C0; /* Silver */
+}
+
+.rank-badge.rank-3 {
+  background-color: #CD7F32; /* Bronze */
+}
+
+.donations-col {
+  font-weight: 600;
+  color: #15283F;
+}
+
+/* User Rank Info */
+.user-rank-info {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background-color: #f5f5f5;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.user-rank-info p {
+  margin: 0.25rem 0;
+  color: #555;
+}
+
+.user-rank {
+  font-weight: 700;
+  color: #15283F;
+  font-size: 1.1rem;
+}
+
+.no-data-message {
+  padding: 2rem;
+  text-align: center;
+  color: #777;
+  font-style: italic;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .leaderboard-filters {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .leaderboard-table-header,
+  .leaderboard-row {
+    grid-template-columns: 0.5fr 1.5fr 1fr 1fr;
+  }
+  
+  .region-col {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .leaderboard-table-header,
+  .leaderboard-row {
+    grid-template-columns: 0.5fr 1.5fr 1fr;
+    font-size: 0.9rem;
+  }
+  
+  .blood-type-col {
+    display: none;
+  }
+  
+  .filter-group {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .filter-buttons {
+    flex: 1;
+    justify-content: flex-end;
+  }
+} 
