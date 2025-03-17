@@ -5,7 +5,7 @@ import { useAuth } from '../../contexts/AuthContext';
 const Header: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, signOut } = useAuth();
+  const { user, signOut, refreshSession } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -26,6 +26,13 @@ const Header: React.FC = () => {
     };
   }, []);
 
+  // Refresh session when component mounts
+  useEffect(() => {
+    if (user) {
+      refreshSession();
+    }
+  }, [user, refreshSession]);
+
   const handleSignOut = async () => {
     try {
       console.log('Header: Attempting to sign out...');
@@ -33,11 +40,12 @@ const Header: React.FC = () => {
       
       if (error) {
         console.error('Header: Error signing out:', error);
-        navigate('/');
-      } else {
-        console.log('Header: Sign out successful, redirecting to home page');
-        navigate('/');
       }
+      
+      // Always navigate to home page after logout attempt, regardless of success/failure
+      console.log('Header: Redirecting to home page after logout');
+      navigate('/');
+      
     } catch (error) {
       console.error('Header: Exception during sign out:', error);
       navigate('/');
@@ -156,4 +164,4 @@ const Header: React.FC = () => {
   );
 };
 
-export default Header; 
+export default Header;
