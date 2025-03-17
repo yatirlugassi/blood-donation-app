@@ -70,7 +70,7 @@ This application is configured for deployment to Google Cloud Run using Cloud Bu
 - Docker installed locally (for testing)
 
 ### Deployment Steps
-1. Push your code to the master branch of this repository
+1. Push your code to the main branch of this repository
 2. Cloud Build will automatically build and deploy the application
 3. Access the application at the URL provided by Cloud Run
 
