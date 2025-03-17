@@ -37,6 +37,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const lastRefreshTime = useRef<number>(0);
   // Add a ref to track if a refresh is in progress
   const isRefreshing = useRef<boolean>(false);
+  // Add a ref to track if the session is valid
+  const isSessionValid = useRef<boolean>(true);
 
   // Function to fetch user profile with caching
   const fetchUserProfile = useCallback(async (userId: string) => {
@@ -97,6 +99,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       
       if (error) {
         console.error('AuthProvider: Error refreshing session:', error);
+        isSessionValid.current = false;
         throw error;
       }
 
@@ -104,6 +107,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         console.log('AuthProvider: Session refresh result:', data?.session ? 'Session exists' : 'No session');
       }
       
+      isSessionValid.current = !!data.session;
       setSession(data.session);
       setUser(data.session?.user || null);
 
@@ -120,6 +124,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       isRefreshing.current = false;
     }
   }, [fetchUserProfile, profile]);
+
+  // Set up a periodic session refresh
+  useEffect(() => {
+    // Refresh session every 5 minutes to keep it active
+    const intervalId = setInterval(() => {
+      if (document.visibilityState === 'visible' && user) {
+        if (process.env.NODE_ENV === 'development') {
+          console.log('AuthProvider: Periodic session refresh');
+        }
+        refreshSession();
+      }
+    }, 5 * 60 * 1000); // 5 minutes
+
+    return () => clearInterval(intervalId);
+  }, [refreshSession, user]);
 
   // Initialize the auth state
   useEffect(() => {
@@ -138,14 +157,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       
       if (event === 'SIGNED_IN' && newSession?.user) {
         console.log('AuthProvider: User signed in, fetching profile...');
+        isSessionValid.current = true;
         await fetchUserProfile(newSession.user.id);
       } else if (event === 'SIGNED_OUT') {
         console.log('AuthProvider: User signed out');
+        isSessionValid.current = false;
         setProfile(null);
       } else if (event === 'TOKEN_REFRESHED' && newSession?.user) {
         if (process.env.NODE_ENV === 'development') {
           console.log('AuthProvider: Token refreshed, updating session');
         }
+        isSessionValid.current = true;
         // No need to fetch profile again as it should already be in state
       }
     });
@@ -227,6 +249,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         // Explicitly set the session and user
         setSession(data.session);
         setUser(data.user);
+        isSessionValid.current = true;
         
         // Fetch user profile
         if (data.user) {
@@ -249,11 +272,28 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       console.log('AuthProvider: Signing out user...');
       setLoading(true);
       
+      // First check if we have a valid session
+      if (!isSessionValid.current) {
+        console.log('AuthProvider: No valid session, performing local signout only');
+        // Clear all auth state locally
+        setUser(null);
+        setSession(null);
+        setProfile(null);
+        localStorage.removeItem('supabase.auth.token');
+        return { error: null };
+      }
+      
+      // Try to sign out with Supabase
       const { error } = await supabase.auth.signOut();
       
       if (error) {
         console.error('AuthProvider: Error signing out:', error);
-        throw error;
+        // Even if there's an error, clear local state
+        setUser(null);
+        setSession(null);
+        setProfile(null);
+        localStorage.removeItem('supabase.auth.token');
+        return { error };
       }
       
       console.log('AuthProvider: Sign out successful, clearing user state');
@@ -265,6 +305,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       return { error: null };
     } catch (error: any) {
       console.error('AuthProvider: Exception during sign out:', error.message);
+      // Even if there's an exception, clear local state
+      setUser(null);
+      setSession(null);
+      setProfile(null);
+      localStorage.removeItem('supabase.auth.token');
       return { error };
     } finally {
       setLoading(false);
@@ -341,4 +386,4 @@ export const useAuth = () => {
   }
   
   return context;
-}; 
+};
