@@ -17,6 +17,7 @@ A comprehensive web application for blood donation awareness, education, and man
 - **Backend**: Supabase (PostgreSQL database with RESTful API)
 - **Authentication**: Supabase Auth
 - **Styling**: CSS with responsive design
+- **Deployment**: Google Cloud Run, Docker
 
 ## Setup Instructions
 
@@ -59,6 +60,32 @@ A comprehensive web application for blood donation awareness, education, and man
    - Optionally set up social logins (Google, Facebook, etc.)
 5. Update your frontend `.env` file with the Supabase URL and anon key
 
+## Deployment to Google Cloud Run
+
+This application is configured for deployment to Google Cloud Run using Cloud Build.
+
+### Prerequisites
+- Google Cloud account
+- gcloud CLI installed and configured
+- Docker installed locally (for testing)
+
+### Deployment Steps
+1. Push your code to the master branch of this repository
+2. Cloud Build will automatically build and deploy the application
+3. Access the application at the URL provided by Cloud Run
+
+### Manual Deployment
+```bash
+# Build the container
+docker build -t gcr.io/algebraic-craft-454012-r9/blood-donation-app .
+
+# Push to Container Registry
+docker push gcr.io/algebraic-craft-454012-r9/blood-donation-app
+
+# Deploy to Cloud Run
+gcloud run deploy blood-donation-app --image gcr.io/algebraic-craft-454012-r9/blood-donation-app --platform managed --region europe-west10 --allow-unauthenticated
+```
+
 ## Database Schema
 
 The application uses the following tables:
@@ -87,4 +114,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 - [Supabase](https://supabase.io/) for the backend and authentication
 - [React](https://reactjs.org/) for the frontend framework
-- Blood donation organizations for educational information 
+- Blood donation organizations for educational information
